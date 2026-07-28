@@ -310,13 +310,11 @@ jobs:
             experimental-features = nix-command flakes
             ${{inputs.nix_conf}}
           nix_version: ${{inputs.nix_version}}
-      - name: Cache Nix store and cache
+      - name: Cache Nix cache
         if: ${{ ! inputs.skip_nix_install }}
         uses: actions/cache@v4
         with:
-          path: |
-            /nix/store
-            ~/.cache/nix
+          path: ~/.cache/nix
           key: nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('**/*.nix') }}
           restore-keys: |
             nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
@@ -365,13 +363,11 @@ jobs:
             experimental-features = nix-command flakes
             ${{inputs.nix_conf}}
           nix_version: ${{inputs.nix_version}}
-      - name: Cache Nix store and cache
+      - name: Cache Nix cache
         if: ${{ ! inputs.skip_nix_install }}
         uses: actions/cache@v4
         with:
-          path: |
-            /nix/store
-            ~/.cache/nix
+          path: ~/.cache/nix
           key: nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('**/*.nix') }}
           restore-keys: |
             nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
