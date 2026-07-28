@@ -358,11 +358,11 @@ jobs:
       - run: |
           sudo mkdir -p /nix/store
           sudo chmod -R 777 /nix
-      - name: Cache Nix store
+      - name: Cache Nix 
         if: ${{ ! inputs.skip_nix_install }}
         uses: actions/cache@v4
         with:
-          # Cache Nix cache and store (but only *-source)
+          # Cache Nix cache and flake inputs (*-source)
           path: |
             ~/.cache/nix
             /nix/store/*-source
@@ -376,9 +376,9 @@ jobs:
             !/nix/var/nix/db/reserved
           key: nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('**/*.nix') }}
           restore-keys: |
-            nix-store-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
-            nix-store-cache-${{ runner.os }}-
-            nix-store-cache-
+            nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
+            nix-cache-${{ runner.os }}-
+            nix-cache-
       - if: ${{ ! inputs.skip_nix_install }}
         uses: nixbuild/nix-quick-install-action@v35
         with:
