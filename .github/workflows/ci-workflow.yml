@@ -356,8 +356,8 @@ jobs:
           lfs: ${{ inputs.lfs }}
       # From https://github.com/cachix/install-nix-action/issues/56#issuecomment-1030697681
       - run: |
-          sudo mkdir -p /nix/store
-          sudo chmod -R 777 /nix
+        sudo mkdir -p /nix/store
+        sudo chmod -R 777 /nix
       - name: Cache Nix 
         if: ${{ ! inputs.skip_nix_install }}
         uses: actions/cache@v4
