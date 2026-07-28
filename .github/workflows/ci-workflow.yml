@@ -362,10 +362,10 @@ jobs:
         if: ${{ ! inputs.skip_nix_install }}
         uses: actions/cache@v4
         with:
-          # Cache Nix cache and store (but only *-source)
+          # Cache Nix cache and store 
           path: |
             ~/.cache/nix
-            /nix/store/*-source
+            /nix/store/**
             /nix/var/nix/*/*
             /nix/var/nix/db/*
             /nix/var/nix/db/*/**
