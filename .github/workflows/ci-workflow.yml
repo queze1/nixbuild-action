@@ -354,32 +354,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: ${{ inputs.lfs }}
-      - run: |
-        # Create with liberal rights, otherwise cache action will complain about permission errors.
-        # From https://github.com/cachix/install-nix-action/issues/56#issuecomment-1030697681
-        sudo mkdir -p /nix/store
-        sudo chmod -R 777 /nix
-      - name: Cache Nix 
-        if: ${{ ! inputs.skip_nix_install }}
-        uses: actions/cache@v4
-        with:
-          # Cache Nix cache and flake inputs (*-source)
-          path: |
-            ~/.cache/nix
-            /nix/store/*-source
-            /nix/var/nix/*/*
-            /nix/var/nix/db/*
-            /nix/var/nix/db/*/**
-            !/nix/var/nix/daemon-socket/socket
-            !/nix/var/nix/userpool/*
-            !/nix/var/nix/gc.lock
-            !/nix/var/nix/db/big-lock
-            !/nix/var/nix/db/reserved
-          key: nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('**/*.nix') }}
-          restore-keys: |
-            nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
-            nix-cache-${{ runner.os }}-
-            nix-cache-
       - if: ${{ ! inputs.skip_nix_install }}
         uses: nixbuild/nix-quick-install-action@v35
         with:
@@ -389,6 +363,16 @@ jobs:
             experimental-features = nix-command flakes
             ${{inputs.nix_conf}}
           nix_version: ${{inputs.nix_version}}
+      - name: Cache Nix cache
+        if: ${{ ! inputs.skip_nix_install }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/nix
+          key: nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('**/*.nix') }}
+          restore-keys: |
+            nix-cache-${{ runner.os }}-${{ hashFiles('flake.lock') }}-
+            nix-cache-${{ runner.os }}-
+            nix-cache-
       - uses: nixbuild/nixbuild-action@master
         with:
           nixbuild_token: ${{secrets.nixbuild_token}}
