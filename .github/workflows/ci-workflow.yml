@@ -409,6 +409,7 @@ jobs:
 
           touch "$RESULTS"
           nix build "${{inputs.flake}}#${{matrix.build.top_attr}}.${{matrix.build.system}}.${{matrix.build.attr}}" \
+            --no-link \
             --print-build-logs \
             --eval-store auto \
             --store ssh-ng://nixbuild \
